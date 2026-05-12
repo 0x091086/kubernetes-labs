@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: deploy-cm-vol
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cm-vol
+
+  template:
+    metadata:
+      name: cm-vol-pod
+      labels:
+        app: cm-vol
+    spec:
+      containers:
+        - name: webapp3000
+          image: cachac/kubelabs-configmap:1.0.0
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: 250m
+              memory: 500Mi
+            requests:
+              cpu: 250m
+              memory: 500Mi
+          volumeMounts:
+            - name: nginx-config-vol
+              mountPath: /etc/nginx/conf.d/default.conf
+              readOnly: true
+              subPath: default.conf # monta solamente el archivo sin sobreescribir los datos originales
+      volumes:
+        - name: nginx-config-vol
+          configMap:
+            name: nginx-conf
+            items: # convierte las entradas CM-data en archivos dentro del volumen.
+              - key: nginx.conf
+                path: default.conf

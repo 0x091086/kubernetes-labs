@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: deploy-lifecycle
+spec:
+  replicas: 4
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: lifecycle
+
+  template:
+    metadata:
+      name: lifecycle-pod
+      labels:
+        app: lifecycle
+    spec:
+      containers:
+        - name: color
+          image: docker.io/kodekloud/webapp-color:v1
+          env:
+            - name: APP_COLOR
+              value: pink

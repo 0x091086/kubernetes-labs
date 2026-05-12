@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: storageclass-pod
+  labels:
+    app: storage-class
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: storage-class
+
+  template:
+    metadata:
+      name: storageclass-pod
+      labels:
+        app: storage-class
+    spec:
+      containers:
+      - name: website
+        image: cachac/kubelabs-storage-class:1.0.0
+        ports:
+        - containerPort: 80
+
+        volumeMounts:
+        - name: auto-claim
+          mountPath: /var/log/nginx
+
+
+      volumes:
+        - name: auto-claim
+          persistentVolumeClaim:
+            claimName: auto-pvc

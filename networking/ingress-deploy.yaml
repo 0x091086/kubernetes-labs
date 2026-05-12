@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-kube-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pod-kube-1
+
+  template:
+    metadata:
+      name: pod-kube-1
+      labels:
+        app: pod-kube-1
+    spec:
+      containers:
+        - name: ingress
+          image: cachac/kubelabs-ingress:1.0.0
+          resources: {}
+          ports:
+            - containerPort: 80

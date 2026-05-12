@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress
+
+spec:
+  rules:
+  - host: josue.kubelabs.dev
+    http: 
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-kube-1
+            port:
+              number: 80
