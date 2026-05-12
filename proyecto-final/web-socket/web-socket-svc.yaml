@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-socket-svc
+  namespace: public
+spec:
+  ports:
+    - targetPort: 3001 # POD port
+      port: 80 # service port
+  selector: # POD labels
+    app: web-socket

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-configmap
+  namespace: public
+data:
+  config.js: |
+    var config = (() => {
+        return {
+          API: "http://api.josue.kubelabs.dev/graphql",
+          WEBSOCKET: "ws://websocket.josue.kubelabs.dev/graphql",
+        };
+      })();

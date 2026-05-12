@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+  namespace: public
+spec:
+  ports:
+    - targetPort: 8080 # POD port
+      port: 80 # service port
+  selector: # POD labels
+    app: web-server

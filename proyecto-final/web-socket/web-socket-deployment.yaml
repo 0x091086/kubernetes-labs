@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: web-socket-deploy
+  namespace: public
+  labels:
+    app: web-socket
+
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: web-socket
+
+  template:
+    metadata:
+      labels:
+        app: web-socket
+    spec:
+      containers:
+        - name: web-socket
+          image: cachac/kubelabs_websocket:1.0.6
+          ports:
+            - containerPort: 3001
+          resources:
+            limits:
+              cpu: 250m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+
+          envFrom:
+            - secretRef:
+                name: web-socket-secret
+
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3081
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3081
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
